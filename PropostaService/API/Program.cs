@@ -43,9 +43,15 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseHttpsRedirection();
 }
-
-app.UseHttpsRedirection();
+else
+{
+    // Habilitar Swagger em produção para facilitar testes no Docker
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    // Não usar HTTPS redirection em produção (Docker configurado apenas para HTTP)
+}
 
 app.UseCors("AllowFrontend");
 

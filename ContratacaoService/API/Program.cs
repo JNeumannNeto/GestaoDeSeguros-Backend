@@ -31,7 +31,12 @@ builder.Services.AddScoped<ContratacaoAppService>();
 
 builder.Services.AddHttpClient<IPropostaServiceClient, PropostaServiceClient>(client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7001/");
+    // Usar URL interna do container em produção, localhost em desenvolvimento
+    var baseUrl = builder.Environment.IsDevelopment() 
+        ? "https://localhost:7001/" 
+        : "http://proposta-service:8080/";
+    
+    client.BaseAddress = new Uri(baseUrl);
     client.Timeout = TimeSpan.FromSeconds(30);
 });
 
@@ -50,10 +55,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    // Habilitar Swagger em produção para facilitar testes no Docker
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
-app.UseHttpsRedirection();
+// Só usar HTTPS redirection em desenvolvimento
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors("AllowFrontend");
 
