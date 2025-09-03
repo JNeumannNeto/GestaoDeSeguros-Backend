@@ -38,6 +38,9 @@ services:
       - RabbitMq__ExchangeName=seguros.exchange
       - RabbitMq__EventsQueueName=seguros.events
       - RabbitMq__CommandsQueueName=seguros.commands
+    labels:
+      - "com.docker.desktop.extension.api.url=http://localhost:5001/swagger"
+      - "com.docker.desktop.extension.icon=https://raw.githubusercontent.com/swagger-api/swagger-ui/master/src/img/favicon-32x32.png"
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -65,6 +68,9 @@ services:
       - RabbitMq__ExchangeName=seguros.exchange
       - RabbitMq__EventsQueueName=seguros.events
       - RabbitMq__CommandsQueueName=seguros.commands
+    labels:
+      - "com.docker.desktop.extension.api.url=http://localhost:5002/swagger"
+      - "com.docker.desktop.extension.icon=https://raw.githubusercontent.com/swagger-api/swagger-ui/master/src/img/favicon-32x32.png"
     depends_on:
       rabbitmq:
         condition: service_healthy
